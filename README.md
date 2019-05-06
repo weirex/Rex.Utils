@@ -6,8 +6,48 @@
 ## 1. 验证判断
 
 ### 1.1 IsNull
-判断是否为空
+- 判断是否为 null or empty，简化 string.IsNullOrEmpty
+- 删除开头和结尾空白字符
+- 支持已下类型：
+ - string
+ - object
+ - DataTable
+ - DataRowCollection
+ - DataRow
+ - DataRow[]
+ - DataSet
+ - IEnumerable<T>
 
+*[C#]*
+
+```csharp
+object o = null;
+o.IsNull(); // true
+
+string str = null;
+str.ToString(); // true
+"".ToString();  // true
+" ".ToString(); // true
+
+var dt = new DataTable();
+dt.IsNull();          // true
+dt.Rows.IsNull();     // true
+dt.Select().IsNull(); // true
+
+DataRow row = dt.NewRow();
+row.IsNull(); // false
+
+var ds = new DataSet();
+ds.Tables.Add(new DataTable());
+ds.IsNull(); // false
+ds = null;
+ds.IsNull(); // true
+
+var list = new List<string>();
+list.IsNull(); // false
+list = null;
+list.IsNull(); // true
+```
 
 ### 1.2 IsInRange
 支持检测 数值/时间/集合 是否在的范围内

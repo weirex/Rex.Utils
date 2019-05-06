@@ -81,7 +81,7 @@ var str = pwd.DESDecrypt(key);
 *[C#]*
 
 ```csharp
-val.MD5();
+var md5 = str.MD5();
 ```
 
 ### 2.4 SHA1
@@ -89,17 +89,59 @@ val.MD5();
 *[C#]*
 
 ```csharp
-val.SHA1();
+var sha1 = str.SHA1();
 ```
 
 
 ## 3. 类型转换
-- ToBool
-- ToDictionary
-- ToList
-- ToGuid
 
-* **Number**
+### 3.1 ToBool
+已下字符串会转换成 true
+- true
+- yes
+- 1
+- on
+- 是
+
+### 3.2 ToDictionary
+目前只支持 枚举 转 字典
+
+*[C#]*
+
+```csharp
+enum MediaType { MP3 = 1,MP4,AVI,MOV,WMV,WAV }
+
+var media = (new MediaType()).ToDictionary();
+```
+
+### 3.3 ToList
+- ToListByReflect：通过反射转 List
+- ToListByDynamic：通过动态生成代码转 List
+
+*[C#]*
+
+```csharp
+var dt = new DataTable();
+dt.Columns.Add("PackageId", typeof(string));
+dt.Columns.Add("Version", typeof(string));
+dt.Columns.Add("ReleaseDate", typeof(DateTime));
+dt.Rows.Add("Newtonsoft.Json", "11.0.1", new DateTime(2018, 2, 17));
+dt.Rows.Add("Newtonsoft.Json", "10.0.3", new DateTime(2017, 6, 18));
+
+var list1 = dt.ToListByReflect<Demo>();
+var list2 = dt.ToListByDynamic<Demo>();
+```
+> 数据量较大时 ToListByDynamic 较快，数据量较小时 ToListByReflect 较快，还在测试中暂时无法保证性能准确性。
+
+### 3.4 ToGuid
+
+*[C#]*
+
+```csharp
+var gid = str.ToGuid();
+```
+
+### 3.5 Number
   * ToInt16
   * ToInt32
   * ToInt64
@@ -108,20 +150,65 @@ val.SHA1();
   * ToDecimal
   * ToDouble
 
-- **Time**
+*[C#]*
+
+```csharp
+object obj = 1;
+string str = "2";
+
+var a1 = obj.ToInt16();
+var a2 = str.ToInt16();
+
+var b1 = obj.ToInt32();
+var b2 =str.ToInt32();
+
+var c1 = obj.ToInt64();
+var c2 = str.ToInt64();
+
+var d1 = obj.ToFloat();
+var d2 = str.ToFloat();
+
+var e1 = obj.ToByte();
+var e2 = str.ToByte();
+
+var f1 = obj.ToDecimal();
+var f2 = str.ToDecimal();
+
+var g1 = obj.ToDouble();
+var g2 = str.ToDouble();
+```
+
+### 3.6 Time
   * ToDateTime
   * ToUnixTimestamp
   * GetTimeFormat
   * GetTime
 
-* **JSON**
+### 3.7 JSON
   * ToJson
   * ToDeserializeObject
-  * JsonNetSerializerSettings
-  * DateFormat
-  * DateTimeFormat
 
-- **基于系统扩展**
+*[C#]*
+
+```csharp
+var m = new Movie();
+m.Name = "Rex";
+m.ReleaseDate = DateTime.Parse("2019-5-1");
+m.Genres = new[] { "Action", "Comedy" };
+var str = m.ToJson();
+
+var json = @"{
+  'Name': 'Rex',
+  'ReleaseDate': '2019-5-1',
+  'Genres': [
+    'Action',
+    'Comedy'
+  ]
+}";
+var model = json.ToDeserializeObject<Movie>();
+```
+
+### 3.8 基于系统扩展
   * ToStrings
   * ToTitleCase
   * ToDBValue
@@ -137,7 +224,7 @@ val.SHA1();
 
 
 ## 4. 文字处理
-> for ToolGood.Words
+> for [ToolGood.Words](https://www.nuget.org/packages/ToolGood.Words/ "ToolGood.Words")
 
 ### 4.1 半角 ==> 转换 <== 全角
 
@@ -208,7 +295,7 @@ str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，
 
 
 ## 5. 记录日志 LogHelper
-> for log4net
+> for [log4net](https://www.nuget.org/packages/log4net/ "log4net")
 
 - Error
 - Fatal

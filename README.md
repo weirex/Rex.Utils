@@ -181,8 +181,17 @@ var g2 = str.ToDouble();
 ### 3.6 Time
   * ToDateTime
   * ToUnixTimestamp
-  * GetTimeFormat
-  * GetTime
+
+*[C#]*
+
+```csharp
+var t1 = "2019/5/1".ToDateTime();    // 2019/5/1
+var t2 = 1556687655000.ToDateTime(); // 2019/5/1 13:14:15
+
+var n1 = DateTime.Parse("2019/5/1 13:14:15").ToUnixTimestamp(); // 1556687655000
+var n2 = DateTime.Now.ToUnixTimestamp() //
+
+```
 
 ### 3.7 JSON
   * ToJson
@@ -209,19 +218,183 @@ var model = json.ToDeserializeObject<Movie>();
 ```
 
 ### 3.8 基于系统扩展
-  * ToStrings
-  * ToTitleCase
-  * ToDBValue
-  * Lengths
-  * Append
-  * Trims
-  * Replaces
-  * Substrings
-  * Splits
-  * TrimEnds
-  * TrimStarts
-  * Joins
+#### 3.8.1 ToTitleCase
 
+*[C#]*
+
+```csharp
+var str1 = "codec_long_name".ToTitleCase();  // "Codec_Long_Name"
+var str2 = "codeclongname".ToTitleCase();    // "Codeclongname"
+var str3 = "codec long name".ToTitleCase();  // "Codec Long Name"
+var str4 = "一个.net core平台".ToTitleCase(); // "一个.Net Core平台"
+```
+#### 3.8.2 Append
+
+*[C#]*
+
+```csharp
+var str1 = "获取当前";
+var str2 = "System.String";
+var str3 = "对象中的字符数";
+var num1 = 123;
+var str = str1.Append(str2).Append(str3).Append(num1);   // "获取当前System.String对象中的字符数123"
+```
+
+#### 3.8.3 Lengths
+
+*[C#]*
+
+```csharp
+var str = "获取当前System.String对象中的字符数";
+
+str.Lengths(); // 35
+str.Length;    // 24
+```
+
+#### 3.8.4 ToStrings
+- 删除开头和结尾空白字符
+- 支持已下类型：
+ - DateTime
+ - bool
+ - DBNull.Value
+ - null
+ - string
+ - DataTable
+ - DataRow
+ - DataRow[]
+
+*[C#]*
+
+```csharp
+// DateTime
+DateTime? dt1 = null;
+dt1.ToStrings();  // null
+
+var dt2 = DateTime.Parse("2019/5/1");
+dt2.ToStrings();             // "2019/05/01 00:00:00"  默认格式：yyyy/MM/dd HH:mm:ss
+dt2.ToStrings("dd/MM/yyyy"); // "01/05/2019"
+
+// bool
+true.ToString();  // "True"
+true.ToStrings(); // "true"
+
+// DBNull.Value  or  null
+object o = DBNull.Value;
+o.ToStrings();    // null
+o = null;
+o.ToStrings();    // null
+
+// string
+var str = " abc ";
+str.ToStrings();  // "abc";
+
+// DataTable
+var dt = new DataTable();
+dt.Columns.Add("PackageId", typeof(string));
+dt.Columns.Add("Version", typeof(string));
+dt.Columns.Add("ReleaseDate", typeof(DateTime));
+dt.Rows.Add("Newtonsoft.Json", "11.0.1", new DateTime(2018, 2, 17));
+dt.Rows.Add("Newtonsoft.Json", "10.0.3", new DateTime(2017, 6, 18));
+
+dt.ToStrings(0, 1);         // "11.0.1"
+dt.ToStrings(0, "Version"); // "11.0.1"
+
+// DataRow
+dt.Rows[0].ToStrings();            // "Newtonsoft.Json"
+dt.Rows[0].ToStrings("PackageId"); // "Newtonsoft.Json"
+
+// DataRow[]
+DataRow[] rows = dt.Select();
+rows.ToStrings(1, 2);           // "2017/6/18 0:00:00"
+rows.ToStrings(1, "PackageId"); // "Newtonsoft.Json"
+```
+
+#### 3.8.5 Trims
+
+*[C#]*
+
+```csharp
+var val = str.Trims();       // 等同于 str?.Trim();
+
+var str = "获取当前System.String对象中的字符数";
+var val = str.Trims('获', '数');  // "取当前System.String对象中的字符"
+
+var val = str.Trims(null);  // null
+```
+
+#### 3.8.6 Replaces
+
+*[C#]*
+
+```csharp
+var str = "获取当前System.String对象中的字符数";
+
+str.Replaces("S");                          // "获取当前ystem.tring对象中的字符数"
+str.Replaces("S", "A");                     // "获取当前Aystem.Atring对象中的字符数"
+str.Replaces(new[] { "S", "字符数" }, "@"); // "获取当前@ystem.@tring对象中的@"
+```
+
+#### 3.8.7 Substrings
+- 截取字符串，区分中英文字符长度，中文按1:2，英文按1:1 计算长度
+
+*[C#]*
+
+```csharp
+var str = "获取当前System.String对象中的字符数";
+
+str.Substrings(7);         // "获取当"
+str.Substrings(11);        // "获取当前Sys"
+str.Substrings(11, "..."); // "获取当前Sys..."
+```
+
+#### 3.8.8 Splits
+- 返回值不包括包含空字符串的数组元素
+- 数组每项会删除开头和结尾空白字符
+
+*[C#]*
+
+```csharp
+string str = "System.String";
+str.Splits(null); // null
+
+str = null;
+str.Splits("s"); // null
+
+str.Splits("");  // [ "System.String" ]
+str.Splits("s"); // [ "Sy", "tem.String" ]
+
+str = "/Sys//tem/ /.String";
+str.Splits("/"); // [ "Sys", "tem", "", ".String" ]
+str.Split('/');  // [ "", "Sys", "", "tem", " ", ".String" ]
+```
+
+#### 3.8.9 Joins
+
+*[C#]*
+
+```csharp
+var list = new List<string>();
+list.Joins("_");  // string.Empty  ( "" )
+
+list = null;
+list.Joins("_"); // null
+
+list = new List<string>();
+list.Add("A");
+list.Add("B");
+list.Add("C");
+list.Joins("_"); // "A_B_C"
+```
+
+#### 3.8.10 StringCut
+字符串裁剪
+
+*[C#]*
+
+```csharp
+var str = "Newtonsoft.Json";
+str.StringCut("New", "."); // tonsoft
+```
 
 ## 4. 文字处理
 > for [ToolGood.Words](https://www.nuget.org/packages/ToolGood.Words/ "ToolGood.Words")
@@ -234,8 +407,8 @@ var model = json.ToDeserializeObject<Movie>();
 *[C#]*
 
 ```csharp
-str.ToSBC(); // abcABC123 ==> ａｂｃＡＢＣ１２３
-str.ToDBC(); // ａｂｃＡＢＣ１２３ ==> abcABC123
+str.ToSBC(); // "abcABC123" ==> "ａｂｃＡＢＣ１２３"
+str.ToDBC(); // "ａｂｃＡＢＣ１２３" ==> "abcABC123"
 ```
 
 ### 4.2 数字 ==> 转换 <== 中文大写
@@ -247,8 +420,8 @@ str.ToDBC(); // ａｂｃＡＢＣ１２３ ==> abcABC123
 
 ```csharp
 double val = 123.45;
-val.ToChineseRMB(); // 123.45 ==> 壹佰贰拾叁元肆角伍分
-str.ToNumber();     // 壹佰贰拾叁元肆角伍分 ==> 123.45
+val.ToChineseRMB(); // "123.45" ==> "壹佰贰拾叁元肆角伍分"
+str.ToNumber();     // "壹佰贰拾叁元肆角伍分" ==> "123.45"
 ```
 
 ### 4.3 简体 ==> 转换 <== 繁体
@@ -259,8 +432,8 @@ str.ToNumber();     // 壹佰贰拾叁元肆角伍分 ==> 123.45
 *[C#]*
 
 ```csharp
-str.ToTraditionalChinese(); // 简体转换繁体 ==> 簡體轉換繁體
-str.ToSimplifiedChinese();  // 簡體轉換繁體 ==> 简体转换繁体
+str.ToTraditionalChinese(); // "简体转换繁体" ==> "簡體轉換繁體"
+str.ToSimplifiedChinese();  // "簡體轉換繁體" ==> "简体转换繁体"
 ```
 
 ### 4.4 判断输入是否为中文/英文
@@ -287,10 +460,10 @@ str.IsAllEnglish(); // 判断是否全部英语
 *[C#]*
 
 ```csharp
-str.GetFirstPinYin(); // 获取首字母，中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> WAZG
-str.GetPinYin();      // 获取拼音全拼,支持多音,中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> WoAiZhongGuo
-str.GetPinYinSpace(); // 获取拼音全拼,支持多音,中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> Wo Ai Zhong Guo
-str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，传 ==> Chuan, Zhuan
+str.GetFirstPinYin(); // 获取首字母，中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> "WAZG"
+str.GetPinYin();      // 获取拼音全拼,支持多音,中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> "WoAiZhongGuo"
+str.GetPinYinSpace(); // 获取拼音全拼,支持多音,中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> "Wo Ai Zhong Guo"
+str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，传 ==> "Chuan", "Zhuan"
 ```
 
 

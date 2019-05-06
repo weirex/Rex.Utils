@@ -3,14 +3,14 @@
 ## 简介
 基于框架 `.NET Framework 4.7`，包含一系列快速开发中经常用到的 Utility 辅助功能。
 
-### 1. 验证判断
-- IsNull
+## 1. 验证判断
 
-  判断是否为空
+### 1.1 IsNull
+判断是否为空
 
-- IsInRange
 
-  支持检测 数值/时间/集合 是否在的范围内
+### 1.2 IsInRange
+支持检测 数值/时间/集合 是否在的范围内
 
 *[C#]*
 
@@ -36,10 +36,10 @@ val1.IsInRange(list); // true
 val2.IsInRange(list); // false
 ```
 
-------------
 
-### 2. 基础加密
-- Base64
+## 2. 基础加密
+
+### 2.1 Base64
 
 *[C#]*
 
@@ -53,7 +53,7 @@ var b64 = val.Base64Encode(Encoding.Default);
 var str = b64.Base64Decode(Encoding.Default);
 ```
 
-- DESEncrypt
+### 2.2 DESEncrypt
 
 *[AppSettings]*
 
@@ -76,7 +76,7 @@ var pwd = val.DESEncrypt(key);
 var str = pwd.DESDecrypt(key);
 ```
 
-- MD5
+### 2.3 MD5
 
 *[C#]*
 
@@ -84,7 +84,7 @@ var str = pwd.DESDecrypt(key);
 val.MD5();
 ```
 
-- SHA1
+### 2.4 SHA1
 
 *[C#]*
 
@@ -92,9 +92,8 @@ val.MD5();
 val.SHA1();
 ```
 
-------------
 
-### 3. 类型转换
+## 3. 类型转换
 - ToBool
 - ToDictionary
 - ToList
@@ -136,12 +135,12 @@ val.SHA1();
   * TrimStarts
   * Joins
 
-------------
 
-### 4. 文字处理
+## 4. 文字处理
 > for ToolGood.Words
 
-#### 4.1. 半角 ==> 转换 <== 全角
+### 4.1 半角 ==> 转换 <== 全角
+
 - ToSBC
 - ToDBC
 
@@ -152,7 +151,8 @@ str.ToSBC(); // abcABC123 ==> ａｂｃＡＢＣ１２３
 str.ToDBC(); // ａｂｃＡＢＣ１２３ ==> abcABC123
 ```
 
-#### 4.2. 数字 ==> 转换 <== 中文大写
+### 4.2 数字 ==> 转换 <== 中文大写
+
 - ToChineseRMB
 - ToNumber
 
@@ -164,7 +164,8 @@ val.ToChineseRMB(); // 123.45 ==> 壹佰贰拾叁元肆角伍分
 str.ToNumber();     // 壹佰贰拾叁元肆角伍分 ==> 123.45
 ```
 
-#### 4.3. 简体 ==> 转换 <== 繁体
+### 4.3 简体 ==> 转换 <== 繁体
+
 - ToSimplifiedChinese
 - ToTraditionalChinese
 
@@ -175,7 +176,7 @@ str.ToTraditionalChinese(); // 简体转换繁体 ==> 簡體轉換繁體
 str.ToSimplifiedChinese();  // 簡體轉換繁體 ==> 简体转换繁体
 ```
 
-#### 4.4. 判断输入是否为中文/英文
+### 4.4 判断输入是否为中文/英文
 - HasChinese
 - IsAllChinese
 - HasEnglish
@@ -190,7 +191,7 @@ str.HasEnglish();   // 判断是否含有英语
 str.IsAllEnglish(); // 判断是否全部英语
 ```
 
-#### 4.5. 拼音
+### 4.5 拼音
 - GetFirstPinYin
 - GetPinYin
 - GetPinYinSpace
@@ -205,9 +206,8 @@ str.GetPinYinSpace(); // 获取拼音全拼,支持多音,中文字符集为[0x4E
 str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，传 ==> Chuan, Zhuan
 ```
 
-------------
 
-### 5. 记录日志 LogHelper
+## 5. 记录日志 LogHelper
 > for log4net
 
 - Error
@@ -228,9 +228,8 @@ LogHelper.Debug(System.Reflection.MethodBase.GetCurrentMethod(), ex);
 // ex ==> Exception or IEnumerable<string> or string
 ```
 
-------------
 
-### 6. 配置文件读取 AppSettings
+## 6. 配置文件读取 AppSettings
 - GetValue
 
 *[AppSettings]*

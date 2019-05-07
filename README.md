@@ -9,14 +9,14 @@
 - 判断是否为 null or empty，简化 string.IsNullOrEmpty
 - 删除开头和结尾空白字符
 - 支持已下类型：
- - string
- - object
- - DataTable
- - DataRowCollection
- - DataRow
- - DataRow[]
- - DataSet
- - IEnumerable<T>
+  - string
+  - object
+  - DataTable
+  - DataRowCollection
+  - DataRow
+  - DataRow[]
+  - DataSet
+  - IEnumerable<T>
 
 *[C#]*
 
@@ -294,14 +294,14 @@ str.Length;    // 24
 #### 3.8.4 ToStrings
 - 删除开头和结尾空白字符
 - 支持已下类型：
- - DateTime
- - bool
- - DBNull.Value
- - null
- - string
- - DataTable
- - DataRow
- - DataRow[]
+  - DateTime
+  - bool
+  - DBNull.Value
+  - null
+  - string
+  - DataTable
+  - DataRow
+  - DataRow[]
 
 *[C#]*
 

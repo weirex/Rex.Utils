@@ -2,7 +2,17 @@
 
 ## 简介
 基于框架 `.NET Framework 4.7`，包含一系列快速开发中经常用到的 Utility 辅助功能。
-## 1. 判断+检测
+
+## 目录
+* [1.判断+检测](#1.判断+检测)
+* [2.加密](#2.加密)
+* [3.类型转换](#3.类型转换)
+* [4.基于系统扩展](#4.基于系统扩展)
+* [5.文字处理](#5.文字处理)
+* [6.记录日志](#6.记录日志)
+* [7.配置文件读取](#7.配置文件读取)
+
+## 1.判断+检测
 
 ### 1.1 IsNull
 - 判断是否为 null or empty，简化 string.IsNullOrEmpty
@@ -74,7 +84,8 @@ var val2 = 55;
 val1.IsRange(list); // true
 val2.IsRange(list); // false
 ```
-## 2. 加密
+
+## 2.加密
 
 ### 2.1 Base64
 
@@ -128,7 +139,8 @@ var md5 = str.MD5();
 ```csharp
 var sha1 = str.SHA1();
 ```
-## 3. 类型转换
+
+## 3.类型转换
 
 ### 3.1 Bool
 已下字符串会转换成 true
@@ -338,7 +350,8 @@ var str2 = "codeclongname".ToTitleCase();    // "Codeclongname"
 var str3 = "codec long name".ToTitleCase();  // "Codec Long Name"
 var str4 = "一个.net core平台".ToTitleCase(); // "一个.Net Core平台"
 ```
-## 4. 基于系统扩展
+
+## 4.基于系统扩展
 
 #### 4.1 Append
 
@@ -514,7 +527,8 @@ var arr = new[] { 1, 2, 3, 4, 5 };
 var val = arr.ToStrings(",");  // "1,2,3,4,5"
 
 ```
-## 5. 文字处理
+
+## 5.文字处理
 > for [ToolGood.Words](https://www.nuget.org/packages/ToolGood.Words/ "ToolGood.Words")
 
 ### 5.1 半角 ==> 转换 <== 全角
@@ -583,7 +597,8 @@ str.GetPinYin();      // 获取拼音全拼,支持多音,中文字符集为[0x4E
 str.GetPinYinSpace(); // 获取拼音全拼,支持多音,中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> "Wo Ai Zhong Guo"
 str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，传 ==> "Chuan", "Zhuan"
 ```
-## 6. 记录日志 LogHelper
+
+## 6.记录日志
 > for [log4net](https://www.nuget.org/packages/log4net/ "log4net")
 
 - `Error`
@@ -657,7 +672,8 @@ public static void abc() {
   </log4net>
 </configuration>
 ```
-## 6. 配置文件读取 AppSettings
+
+## 7.配置文件读取
 - GetValue
 
 *[AppSettings]*
@@ -678,4 +694,5 @@ var number = AppSettings.GetValue<int>("number");
 var path = AppSettings.GetValueToPath("Log4NetPath");
 // "/App_Data/log4net.config" ==> "x:\xxxx\xxxx\App_Data\log4net.config"
 ```
+
 

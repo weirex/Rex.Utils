@@ -1,8 +1,8 @@
 # Change log
 
-## 1.0.6
-
+## 1.0.6 （2019.07.20）
 #### 添加：
+##### 1. 时间相关：
 - `ToChineseDate` 转换为农历年
 - `ToChineseDay` 阿拉伯数字转换中文日期数字
 - `ToChineseMonth` 阿拉伯数字转换成中文月份数字
@@ -22,6 +22,16 @@
 - `IsToday` 日期是否是今天
 - `IsWeekDay` 是否是工作日
 - `IsWeekEnd` 是否是周末
+
+##### 2. 字典相关：
+- `AddOrReplace` 添加或替换内容
+- `AddRange` 合并两个字典
+- `GetValue` 字典取值
+
+#### 调整：
+- ` LogHelper.Fatal(MethodBase.GetCurrentMethod(), ex);` ==> `LogHelper.Debug(this, ex);`
+
+
 
 ## 1.0.5
 - Bug修复和小的调整

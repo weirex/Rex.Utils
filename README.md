@@ -139,7 +139,10 @@ var sha1 = str.SHA1();
 - `是`
 
 ### 3.2 Dictionary
-目前只支持 枚举 转 字典
+- `ToDictionary` 目前只支持[枚举]转[字典]
+- `AddOrReplace` 添加或替换已有内容
+- `AddRange` 合并两个字典
+- `GetValue` 从字典取值
 
 *[C#]*
 
@@ -147,6 +150,7 @@ var sha1 = str.SHA1();
 enum MediaType { MP3 = 1,MP4,AVI,MOV,WMV,WAV }
 
 var media = (new MediaType()).ToDictionary();
+
 ```
 
 ### 3.3 List
@@ -596,6 +600,33 @@ str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，
 </appSettings>
 ```
 
+
+*[C#]*
+
+```csharp
+// LogHelper.Error(this, ex);
+// LogHelper.Fatal(this, ex);
+// LogHelper.Warn(this, ex);
+// LogHelper.Info(this, ex);
+// LogHelper.Debug(this, ex);
+
+// ex ==> Exception or IEnumerable<string> or string
+
+public void Test() {
+    try {
+        abc();
+    }
+    catch (Exception ex) {
+        LogHelper.Error(this, ex, "Error","测试");
+    }
+}
+
+public static void abc() {
+    throw new Exception("test");
+}
+```
+
+
 *[log4net.config]*
 
 ```xml
@@ -625,18 +656,6 @@ str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，
     </appender>
   </log4net>
 </configuration>
-```
-
-*[C#]*
-
-```csharp
-LogHelper.Error(System.Reflection.MethodBase.GetCurrentMethod(), ex);
-LogHelper.Fatal(System.Reflection.MethodBase.GetCurrentMethod(), ex);
-LogHelper.Warn(System.Reflection.MethodBase.GetCurrentMethod(), ex);
-LogHelper.Info(System.Reflection.MethodBase.GetCurrentMethod(), ex);
-LogHelper.Debug(System.Reflection.MethodBase.GetCurrentMethod(), ex);
-
-// ex ==> Exception or IEnumerable<string> or string
 ```
 ## 6. 配置文件读取 AppSettings
 - GetValue

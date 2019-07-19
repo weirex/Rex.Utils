@@ -2,21 +2,20 @@
 
 ## 简介
 基于框架 `.NET Framework 4.7`，包含一系列快速开发中经常用到的 Utility 辅助功能。
-
-## 1. 验证判断
+## 1. 判断+检测
 
 ### 1.1 IsNull
 - 判断是否为 null or empty，简化 string.IsNullOrEmpty
 - 删除开头和结尾空白字符
 - 支持已下类型：
-  - string
-  - object
-  - DataTable
-  - DataRowCollection
-  - DataRow
-  - DataRow[]
-  - DataSet
-  - IEnumerable<T>
+  - `string`
+  - `object`
+  - `DataTable`
+  - `DataRowCollection`
+  - `DataRow`
+  - `DataRow[]`
+  - `DataSet`
+  - `IEnumerable<T>`
 
 *[C#]*
 
@@ -49,7 +48,7 @@ list = null;
 list.IsNull(); // true
 ```
 
-### 1.2 IsInRange
+### 1.2 IsRange
 支持检测 数值/时间/集合 是否在的范围内
 
 *[C#]*
@@ -59,25 +58,23 @@ var a = 1;
 var b = 10;
 var c = 5;
 var d = 14;
-c.IsInRange(a, b); // true
-d.IsInRange(a, b); // false
+c.IsRange(a, b); // true
+d.IsRange(a, b); // false
 
 var a = DateTime.Parse("2019/5/1");
 var b = DateTime.Parse("2019/5/5");
 var c = DateTime.Parse("2019/5/2");
 var d = DateTime.Parse("2019/5/6");
-c.IsInRange(a, b); // true
-d.IsInRange(a, b); // false
+c.IsRange(a, b); // true
+d.IsRange(a, b); // false
 
 var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 var val1 = 3;
 var val2 = 55;
-val1.IsInRange(list); // true
-val2.IsInRange(list); // false
+val1.IsRange(list); // true
+val2.IsRange(list); // false
 ```
-
-
-## 2. 基础加密
+## 2. 加密
 
 ### 2.1 Base64
 
@@ -131,19 +128,17 @@ var md5 = str.MD5();
 ```csharp
 var sha1 = str.SHA1();
 ```
-
-
 ## 3. 类型转换
 
-### 3.1 ToBool
+### 3.1 Bool
 已下字符串会转换成 true
-- true
-- yes
-- 1
-- on
-- 是
+- `true`
+- `yes`
+- `1`
+- `on`
+- `是`
 
-### 3.2 ToDictionary
+### 3.2 Dictionary
 目前只支持 枚举 转 字典
 
 *[C#]*
@@ -154,9 +149,9 @@ enum MediaType { MP3 = 1,MP4,AVI,MOV,WMV,WAV }
 var media = (new MediaType()).ToDictionary();
 ```
 
-### 3.3 ToList
-- ToListByReflect：通过反射转 List
-- ToListByDynamic：通过动态生成代码转 List
+### 3.3 List
+- 通过反射转 List ==> `ToListByReflect`
+- 通过动态生成代码转 List ==> `ToListByDynamic`
 
 *[C#]*
 
@@ -173,7 +168,7 @@ var list2 = dt.ToListByDynamic<Demo>();
 ```
 > 数据量较大时 ToListByDynamic 较快，数据量较小时 ToListByReflect 较快，还在测试中暂时无法保证性能准确性。
 
-### 3.4 ToGuid
+### 3.4 Guid
 
 *[C#]*
 
@@ -182,13 +177,13 @@ var gid = str.ToGuid();
 ```
 
 ### 3.5 Number
-  * ToInt16
-  * ToInt32
-  * ToInt64
-  * ToFloat
-  * ToByte
-  * ToDecimal
-  * ToDouble
+  * `ToInt16`
+  * `ToInt32`
+  * `ToInt64`
+  * `ToFloat`
+  * `ToByte`
+  * `ToDecimal`
+  * `ToDouble`
 
 *[C#]*
 
@@ -219,8 +214,23 @@ var g2 = str.ToDouble();
 ```
 
 ### 3.6 Time
-  * ToDateTime
-  * ToUnixTimestamp
+  * `ToDateTime` 时间格式转换为 Unix 时间戳格式
+  * `ToUnixTimestamp` 
+  * `EndOfDay`  一天末尾时间
+  * `EndOfMonth`  一个月末尾时间
+  * `EndOfWeek`  一周末尾时间
+  * `EndOfYear` 一年末尾时间
+  * `FirstDayOfWeek` 一周的第一天
+  * `GetAge` 根据出生日期计算年龄
+  * `GetDateDiff` 日期差计算
+  * `GetDays` 获取一个月有多少天
+  * `GetFriendlyString` 友好时间
+  * `GetWeekdays` 返回两个时间内工作日天数
+  * `GetWeekends` 返回两个时间内周末天数
+  * `GetWeekNumber` 获取日期是一年中第几个星期
+  * `IsToday` 日期是否是今天
+  * `IsWeekDay` 是否是工作日
+  * `IsWeekEnd` 是否是周末
 
 *[C#]*
 
@@ -228,14 +238,72 @@ var g2 = str.ToDouble();
 var t1 = "2019/5/1".ToDateTime();    // 2019/5/1
 var t2 = 1556687655000.ToDateTime(); // 2019/5/1 13:14:15
 
+
 var n1 = DateTime.Parse("2019/5/1 13:14:15").ToUnixTimestamp(); // 1556687655000
 var n2 = DateTime.Now.ToUnixTimestamp() //
+
+//一天末尾时间
+DateTime.Now.EndOfDay(); // 2019/7/19 23:59:59
+//一个月末尾时间
+DateTime.Now.EndOfMonth(); // 2019/7/31 23:59:59
+//一周末尾时间
+DateTime.Now.EndOfWeek(); // 2019/7/21 23:59:59
+//一年末尾时间
+DateTime.Now.EndOfYear(); // 2019/12/31 23:59:59
+//工作周的第一天（星期一）
+DateTime.Now.FirstDayOfWeek(); // 2019/7/14 0:00:00（周日）
+
+//根据出生日期计算年龄
+"2000/7/19".ToDateTime().GetAge(); // 19
+
+//日期差计算
+new DateTime(2000, 7, 19)
+    .GetDateDiff(DateTime.Now, Extend.Enum.DateTimePart.Year); // 19
+
+//获取一个月有多少天
+DateTime.Now.GetDays(); // 30
+
+//友好时间
+DateTime.Now.AddDays(-3).GetFriendlyString();
+// 32秒前
+// 1分钟之前
+// 3分钟
+// 1小时前
+// 3小时前
+// 昨天
+// 3天之前
+// 1个月之前
+// 3月之前
+// 3年前
+
+//返回两个时间内工作日天数
+var t1 = new DateTime(2019, 7, 1);
+var t2 = new DateTime(2019, 7, 10);
+t1.GetWeekdays(t2); // 7
+
+//返回两个时间内周末天数
+var t1 = new DateTime(2019, 7, 1);
+var t2 = new DateTime(2019, 7, 19);
+t1.GetWeekends(t2); // 4
+
+
+//获取日期是一年中第几个星期（星期一为本周第一天）
+DateTime.Now.GetWeekNumber(); // 29
+
+//日期是否是今天
+DateTime.Now.IsToday(); // true | false
+
+//是否是工作日
+DateTime.Now.IsWeekDay(); // true | false
+
+//是否是周末（周六日）
+DateTime.Now.IsWeekEnd(); // true | false
 
 ```
 
 ### 3.7 JSON
-  * ToJson
-  * ToDeserializeObject
+  * `ToJson`
+  * `ToDeserializeObject`
 
 *[C#]*
 
@@ -257,9 +325,7 @@ var json = @"{
 var model = json.ToDeserializeObject<Movie>();
 ```
 
-### 3.8 基于系统扩展
-#### 3.8.1 ToTitleCase
-
+### 3.8 TitleCase
 *[C#]*
 
 ```csharp
@@ -268,7 +334,9 @@ var str2 = "codeclongname".ToTitleCase();    // "Codeclongname"
 var str3 = "codec long name".ToTitleCase();  // "Codec Long Name"
 var str4 = "一个.net core平台".ToTitleCase(); // "一个.Net Core平台"
 ```
-#### 3.8.2 Append
+## 4. 基于系统扩展
+
+#### 4.1 Append
 
 *[C#]*
 
@@ -280,7 +348,7 @@ var num1 = 123;
 var str = str1.Append(str2).Append(str3).Append(num1);   // "获取当前System.String对象中的字符数123"
 ```
 
-#### 3.8.3 Lengths
+#### 4.2 Lengths
 
 *[C#]*
 
@@ -291,17 +359,106 @@ str.Lengths(); // 35
 str.Length;    // 24
 ```
 
-#### 3.8.4 ToStrings
+#### 4.3 Trims
+
+*[C#]*
+
+```csharp
+var val = str.Trims();       // 等同于 str?.Trim();
+
+var str = "获取当前System.String对象中的字符数";
+var val = str.Trims('获', '数');  // "取当前System.String对象中的字符"
+
+var val = str.Trims(null);  // null
+```
+
+#### 4.4 Replaces
+
+*[C#]*
+
+```csharp
+var str = "获取当前System.String对象中的字符数";
+
+str.Replaces("S");                          // "获取当前ystem.tring对象中的字符数"
+str.Replaces("S", "A");                     // "获取当前Aystem.Atring对象中的字符数"
+str.Replaces(new[] { "S", "字符数" }, "@"); // "获取当前@ystem.@tring对象中的@"
+```
+
+#### 3.8.7 Substrings
+- 截取字符串，区分中英文字符长度，中文按1:2，英文按1:1 计算长度
+
+*[C#]*
+
+```csharp
+var str = "获取当前System.String对象中的字符数";
+
+str.Substrings(7);         // "获取当"
+str.Substrings(11);        // "获取当前Sys"
+str.Substrings(11, "..."); // "获取当前Sys..."
+```
+
+#### 4.5 Splits
+- 返回值不包括包含空字符串的数组元素
+- 数组每项会删除开头和结尾空白字符
+
+*[C#]*
+
+```csharp
+string str = "System.String";
+str.Splits(null); // null
+
+str = null;
+str.Splits("s"); // null
+
+str.Splits("");  // [ "System.String" ]
+str.Splits("s"); // [ "Sy", "tem.String" ]
+
+str = "/Sys//tem/ /.String";
+str.Splits("/"); // [ "Sys", "tem", "", ".String" ]
+str.Split('/');  // [ "", "Sys", "", "tem", " ", ".String" ]
+```
+
+#### 4.6 Joins
+
+*[C#]*
+
+```csharp
+var list = new List<string>();
+list.Joins("_");  // string.Empty  ( "" )
+
+list = null;
+list.Joins("_"); // null
+
+list = new List<string>();
+list.Add("A");
+list.Add("B");
+list.Add("C");
+list.Joins("_"); // "A_B_C"
+```
+
+#### 4.7 StringCut
+字符串裁剪
+
+*[C#]*
+
+```csharp
+var str = "Newtonsoft.Json";
+str.StringCut("New", "."); // tonsoft
+```
+
+
+#### 4.8 Strings
 - 删除开头和结尾空白字符
 - 支持已下类型：
-  - DateTime
-  - bool
-  - DBNull.Value
-  - null
-  - string
-  - DataTable
-  - DataRow
-  - DataRow[]
+  - `DateTime`
+  - `bool`
+  - `DBNull.Value`
+  - `null`
+  - `string`
+  - `DataTable`
+  - `DataRow`
+  - `DataRow[]`
+  - `T[]`
 
 *[C#]*
 
@@ -347,102 +504,19 @@ dt.Rows[0].ToStrings("PackageId"); // "Newtonsoft.Json"
 DataRow[] rows = dt.Select();
 rows.ToStrings(1, 2);           // "2017/6/18 0:00:00"
 rows.ToStrings(1, "PackageId"); // "Newtonsoft.Json"
+
+// T[]
+var arr = new[] { 1, 2, 3, 4, 5 };
+var val = arr.ToStrings(",");  // "1,2,3,4,5"
+
 ```
-
-#### 3.8.5 Trims
-
-*[C#]*
-
-```csharp
-var val = str.Trims();       // 等同于 str?.Trim();
-
-var str = "获取当前System.String对象中的字符数";
-var val = str.Trims('获', '数');  // "取当前System.String对象中的字符"
-
-var val = str.Trims(null);  // null
-```
-
-#### 3.8.6 Replaces
-
-*[C#]*
-
-```csharp
-var str = "获取当前System.String对象中的字符数";
-
-str.Replaces("S");                          // "获取当前ystem.tring对象中的字符数"
-str.Replaces("S", "A");                     // "获取当前Aystem.Atring对象中的字符数"
-str.Replaces(new[] { "S", "字符数" }, "@"); // "获取当前@ystem.@tring对象中的@"
-```
-
-#### 3.8.7 Substrings
-- 截取字符串，区分中英文字符长度，中文按1:2，英文按1:1 计算长度
-
-*[C#]*
-
-```csharp
-var str = "获取当前System.String对象中的字符数";
-
-str.Substrings(7);         // "获取当"
-str.Substrings(11);        // "获取当前Sys"
-str.Substrings(11, "..."); // "获取当前Sys..."
-```
-
-#### 3.8.8 Splits
-- 返回值不包括包含空字符串的数组元素
-- 数组每项会删除开头和结尾空白字符
-
-*[C#]*
-
-```csharp
-string str = "System.String";
-str.Splits(null); // null
-
-str = null;
-str.Splits("s"); // null
-
-str.Splits("");  // [ "System.String" ]
-str.Splits("s"); // [ "Sy", "tem.String" ]
-
-str = "/Sys//tem/ /.String";
-str.Splits("/"); // [ "Sys", "tem", "", ".String" ]
-str.Split('/');  // [ "", "Sys", "", "tem", " ", ".String" ]
-```
-
-#### 3.8.9 Joins
-
-*[C#]*
-
-```csharp
-var list = new List<string>();
-list.Joins("_");  // string.Empty  ( "" )
-
-list = null;
-list.Joins("_"); // null
-
-list = new List<string>();
-list.Add("A");
-list.Add("B");
-list.Add("C");
-list.Joins("_"); // "A_B_C"
-```
-
-#### 3.8.10 StringCut
-字符串裁剪
-
-*[C#]*
-
-```csharp
-var str = "Newtonsoft.Json";
-str.StringCut("New", "."); // tonsoft
-```
-
-## 4. 文字处理
+## 5. 文字处理
 > for [ToolGood.Words](https://www.nuget.org/packages/ToolGood.Words/ "ToolGood.Words")
 
-### 4.1 半角 ==> 转换 <== 全角
+### 5.1 半角 ==> 转换 <== 全角
 
-- ToSBC
-- ToDBC
+- `ToSBC`
+- `ToDBC`
 
 *[C#]*
 
@@ -451,10 +525,10 @@ str.ToSBC(); // "abcABC123" ==> "ａｂｃＡＢＣ１２３"
 str.ToDBC(); // "ａｂｃＡＢＣ１２３" ==> "abcABC123"
 ```
 
-### 4.2 数字 ==> 转换 <== 中文大写
+### 5.2 数字 ==> 转换 <== 中文大写
 
-- ToChineseRMB
-- ToNumber
+- `ToChineseRMB`
+- `ToNumber`
 
 *[C#]*
 
@@ -464,10 +538,10 @@ val.ToChineseRMB(); // "123.45" ==> "壹佰贰拾叁元肆角伍分"
 str.ToNumber();     // "壹佰贰拾叁元肆角伍分" ==> "123.45"
 ```
 
-### 4.3 简体 ==> 转换 <== 繁体
+### 5.3 简体 ==> 转换 <== 繁体
 
-- ToSimplifiedChinese
-- ToTraditionalChinese
+- `ToSimplifiedChinese`
+- `ToTraditionalChinese`
 
 *[C#]*
 
@@ -476,11 +550,11 @@ str.ToTraditionalChinese(); // "简体转换繁体" ==> "簡體轉換繁體"
 str.ToSimplifiedChinese();  // "簡體轉換繁體" ==> "简体转换繁体"
 ```
 
-### 4.4 判断输入是否为中文/英文
-- HasChinese
-- IsAllChinese
-- HasEnglish
-- IsAllEnglish
+### 5.4 判断输入是否为中文/英文
+- `HasChinese`
+- `IsAllChinese`
+- `HasEnglish`
+- `IsAllEnglish`
 
 *[C#]*
 
@@ -491,11 +565,11 @@ str.HasEnglish();   // 判断是否含有英语
 str.IsAllEnglish(); // 判断是否全部英语
 ```
 
-### 4.5 拼音
-- GetFirstPinYin
-- GetPinYin
-- GetPinYinSpace
-- GetAllPinYin
+### 5.5 拼音
+- `GetFirstPinYin`
+- `GetPinYin`
+- `GetPinYinSpace`
+- `GetAllPinYin`
 
 *[C#]*
 
@@ -505,16 +579,14 @@ str.GetPinYin();      // 获取拼音全拼,支持多音,中文字符集为[0x4E
 str.GetPinYinSpace(); // 获取拼音全拼,支持多音,中文字符集为[0x4E00,0x9FA5]，我爱中国 ==> "Wo Ai Zhong Guo"
 str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，传 ==> "Chuan", "Zhuan"
 ```
-
-
-## 5. 记录日志 LogHelper
+## 6. 记录日志 LogHelper
 > for [log4net](https://www.nuget.org/packages/log4net/ "log4net")
 
-- Error
-- Fatal
-- Warn
-- Info
-- Debug
+- `Error`
+- `Fatal`
+- `Warn`
+- `Info`
+- `Debug`
 
 *[AppSettings]*
 
@@ -566,8 +638,6 @@ LogHelper.Debug(System.Reflection.MethodBase.GetCurrentMethod(), ex);
 
 // ex ==> Exception or IEnumerable<string> or string
 ```
-
-
 ## 6. 配置文件读取 AppSettings
 - GetValue
 
@@ -585,4 +655,8 @@ LogHelper.Debug(System.Reflection.MethodBase.GetCurrentMethod(), ex);
 ```csharp
 var abc = AppSettings.GetValue("abc");
 var number = AppSettings.GetValue<int>("number");
+
+var path = AppSettings.GetValueToPath("Log4NetPath");
+// "/App_Data/log4net.config" ==> "x:\xxxx\xxxx\App_Data\log4net.config"
 ```
+

@@ -1,5 +1,29 @@
 # Change log
 
+## 1.0.8 （2019.07.30）
+- 增加：
+    - 实体：System.Extend.Models.ResultModel
+
+```csharp
+var result = new ResultModel { Code = 1000, Msg = "成功", Data = new { id = 1, name = "xx" } };
+var json = paramsErrorResult.ToJson();
+```
+
+输出 JSON
+
+```javascript
+{
+    "code": 1000,
+    "msg": "成功",
+    "data": {
+        "id": 1,
+        "name": "xx"
+    }
+}
+```
+
+
+
 ## 1.0.7 （2019.07.21）
 - Bug修复和小的调整
 

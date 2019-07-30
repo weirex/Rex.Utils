@@ -675,7 +675,7 @@ public static void abc() {
 </configuration>
 ```
 
-## 7.配置文件读取
+## 7.配置文件读取（带缓存）
 - GetValue
 
 *[AppSettings]*

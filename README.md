@@ -1,4 +1,4 @@
-# Rex.Utils
+# Rex.Utils.Core
 
 ## 简介
 支持框架 `.NET Standard 2.1` `.NET Framework 4.7`，包含日常开发中使用的辅助方法。

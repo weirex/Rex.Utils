@@ -1,11 +1,10 @@
-
 # Rex.Utils
 
 ## 简介
-基于框架 `.NET Framework 4.7`，包含一系列快速开发中经常用到的 Utility 辅助功能。
+支持框架 `.NET Standard 2.1` `.NET Framework 4.7`，包含一系列快速开发中经常用到的 Utility 辅助功能。
 
 ## 目录
-* [更新日志](CHANGELOG.md "更新日志")（2019.07.30）
+* [更新日志](CHANGELOG.md "更新日志")（2019.12.09）
 * [1.判断+检测](#1判断检测)
 * [2.加密](#2加密)
 * [3.类型转换](#3类型转换)
@@ -232,8 +231,8 @@ var g2 = str.ToDouble();
 ```
 
 ### 3.6 Time
-  * `ToDateTime` 时间格式转换为 Unix 时间戳格式
-  * `ToUnixTimestamp` 
+  * `ToDateTime` 字符串转时间
+  * `ToUnixTimestamp` 时间格式转换为 Unix 时间戳格式
   * `EndOfDay`  一天末尾时间
   * `EndOfMonth`  一个月末尾时间
   * `EndOfWeek`  一周末尾时间
@@ -253,12 +252,21 @@ var g2 = str.ToDouble();
 *[C#]*
 
 ```csharp
-var t1 = "2019/5/1".ToDateTime();    // 2019/5/1
-var t2 = 1556687655000.ToDateTime(); // 2019/5/1 13:14:15
+"2019/5/1".ToDateTime();    // 2019/5/1
+1556687655000.ToDateTime(); // 2019/5/1 13:14:15
 
 
-var n1 = DateTime.Parse("2019/5/1 13:14:15").ToUnixTimestamp(); // 1556687655000
-var n2 = DateTime.Now.ToUnixTimestamp() //
+DateTime? time1 = null;
+string st1 = time1.ToStrings();  //null
+
+string time2 = null;
+DateTime? st2 = time2.ToDateTimes();  //null
+
+DateTime? dts = (43799.9820949074).ToDateTimes();  //2019/11/30 23:34:13
+
+
+DateTime.Parse("2019/5/1 13:14:15").ToUnixTimestamp(); // 1556687655000
+DateTime.Now.ToUnixTimestamp() //
 
 //一天末尾时间
 DateTime.Now.EndOfDay(); // 2019/7/19 23:59:59
@@ -275,8 +283,7 @@ DateTime.Now.FirstDayOfWeek(); // 2019/7/14 0:00:00（周日）
 "2000/7/19".ToDateTime().GetAge(); // 19
 
 //日期差计算
-new DateTime(2000, 7, 19)
-    .GetDateDiff(DateTime.Now, Extend.Enum.DateTimePart.Year); // 19
+new DateTime(2000, 7, 19).GetDateDiff(DateTime.Parse("2019-7-19"), Extend.Enum.DateTimePart.Year); // 19
 
 //获取一个月有多少天
 DateTime.Now.GetDays(); // 30
@@ -353,9 +360,62 @@ var str3 = "codec long name".ToTitleCase();  // "Codec Long Name"
 var str4 = "一个.net core平台".ToTitleCase(); // "一个.Net Core平台"
 ```
 
+### 3.9 泛型集合 与 DataTable 互转
+  * `ToDataTable<T>`
+  * `ToListByReflect`
+  * `ToListByDynamic` 
+
+*[C#]*
+
+```csharp
+var dic = new Dictionary<int, int?>();
+dic.Add(1, 123);
+dic.Add(2, 234);
+dic.Add(3, null);
+var table = dic3.ToDataTable();
+// table.Columns.Count ==> 2
+// table.Rows[0][0] ==> 1
+// table.Rows[0][1] ==> 123
+// table.Rows[1][0] ==> 2
+// table.Rows[1][1] ==> 234
+// table.Rows[2][0] ==> 3
+// table.Rows[2][1] ==> DBNull.Value
+
+
+var arr = new[] { 1, 2, 3, 4 };
+var table = arr.ToDataTable();
+// table.Columns.Count ==> 1
+// table.Rows[0][0] ==> 1
+// table.Rows[1][0] ==> 2
+// table.Rows[2][0] ==> 3
+// table.Rows[3][0] ==> 4
+
+
+var list = new List<Demo>
+{
+    new Demo {PackageId = "1", ReleaseDate = DateTime.Parse("2019-12-01"), Version = "1.1"},
+    new Demo {PackageId = "2", ReleaseDate = DateTime.Parse("2019-12-02"), Version = "1.2"},
+    new Demo {PackageId = "3", ReleaseDate = DateTime.Parse("2019-12-03"), Version = "1.3"},
+};
+table = list.ToDataTable();
+// table.Columns.Count ==> 3
+// table.Rows[0]["PackageId"] ==> "1"
+// table.Rows[0]["ReleaseDate"] ==> 2019-12-01 00:00:00
+// table.Rows[0]["Version"] ==> "1.1"
+// table.Rows[1]["PackageId"] ==> "2"
+// table.Rows[1]["ReleaseDate"] ==> 2019-12-02 00:00:00
+// table.Rows[1]["Version"] ==> "1.2"
+// table.Rows[2]["PackageId"] ==> "3"
+// table.Rows[2]["ReleaseDate"] ==> 2019-12-03 00:00:00
+// table.Rows[2]["Version"] ==> "1.3"
+
+var d1 = table.ToListByDynamic<Demo>();  // d1 == list
+var d2 = table.ToListByReflect<Demo>();  // d2 == list
+
+```
 ## 4.基于系统扩展
 
-#### 4.1 Append
+#### 4.1 Append/AppendBefore
 
 *[C#]*
 
@@ -365,6 +425,8 @@ var str2 = "System.String";
 var str3 = "对象中的字符数";
 var num1 = 123;
 var str = str1.Append(str2).Append(str3).Append(num1);   // "获取当前System.String对象中的字符数123"
+
+var b = "bbb".Append(111).AppendBefore("@@"); // @@bbb111
 ```
 
 #### 4.2 Lengths
@@ -621,11 +683,11 @@ str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，
 *[C#]*
 
 ```csharp
-// LogHelper.Error(this, ex);
-// LogHelper.Fatal(this, ex);
-// LogHelper.Warn(this, ex);
-// LogHelper.Info(this, ex);
-// LogHelper.Debug(this, ex);
+// LogHelper.Error(System.Reflection.MethodBase.GetCurrentMethod(), ex);
+// LogHelper.Fatal(System.Reflection.MethodBase.GetCurrentMethod(), ex);
+// LogHelper.Warn(System.Reflection.MethodBase.GetCurrentMethod(), ex);
+// LogHelper.Info(System.Reflection.MethodBase.GetCurrentMethod(), ex);
+// LogHelper.Debug(System.Reflection.MethodBase.GetCurrentMethod(), ex);
 
 // ex ==> Exception or IEnumerable<string> or string
 
@@ -678,13 +740,17 @@ public static void abc() {
 ## 7.配置文件读取（带缓存）
 - GetValue
 
-*[AppSettings]*
+- Framework：配置在 web.config
+- .Net Core：可将 AppSettings.json 文件放置于根目录或 App_Data 目录内
 
-```xml
-<appSettings>
-   <add key="abc" value="abc"/>
-   <add key="number" value="123456"/>
-</appSettings>
+*AppSettings.json*
+```JSON
+{
+  "Appsettings": {
+    "Log4NetPath": "/App_Data/log4net.config",
+    "CacheTime": 3600,
+    }
+}
 ```
 
 *[C#]*

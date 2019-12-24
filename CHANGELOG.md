@@ -1,6 +1,6 @@
 # Change log
 
-## 2.2.0.5 （2019.12.25）
+## 2.2.0 （2019.12.25）
 - 调整部分代码的依赖关系
 - 增加 针对 `IEnumerable` 类型的 `IndexOf` 扩展
 - 增加 单例类助手 `Singleton` 例：`public class ClassA : Singleton<ClassA>`

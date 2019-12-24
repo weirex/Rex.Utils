@@ -1,7 +1,7 @@
 # Change log
 
-## 2.2.0 （2019.12.24）
-- 移除 `LogHelper` ，转移到 `Rex.Helper.Core`，调整结构，减少依赖
+## 2.2.0.5 （2019.12.25）
+- 调整部分代码的依赖关系
 - 增加 针对 `IEnumerable` 类型的 `IndexOf` 扩展
 - 增加 单例类助手 `Singleton` 例：`public class ClassA : Singleton<ClassA>`
 - 增加 `Distinct` 扩展更符合 Linq 一贯的风格 `var p1 = products.Distinct(p => p.ID);`

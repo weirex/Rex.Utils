@@ -1,7 +1,7 @@
 # Rex.Utils.Core
 
 ## 简介
-框架 `.NET Standard 2.1` `.NET Framework 4.7`，包括日常开发中使用的扩展方法。
+框架 `.NET Standard 2.1` `.NET Framework 4.7`，包括日常开发常用的扩展方法。
 
 ## 目录
 * [更新日志](CHANGELOG.md "更新日志")（2019.12.25）

@@ -35,9 +35,9 @@ object o = null;
 o.IsNull(); // true
 
 string str = null;
-str.ToString(); // true
-"".ToString();  // true
-" ".ToString(); // true
+str.IsNull(); // true
+"".IsNull();  // true
+" ".IsNull(); // true
 
 var dt = new DataTable();
 dt.IsNull();          // true

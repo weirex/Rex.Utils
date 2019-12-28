@@ -781,6 +781,8 @@ public static void abc() {
 *[C#]*
 
 ```csharp
-var abc = AppSettings.GetValue("abc");
-var number = AppSettings.GetValue<int>("number");
+string abc = AppSettings.GetValue("Log4NetPath");   // "/App_Data/log4net.config"
+int number = AppSettings.GetValue<int>("number");   // 3600
 ```
+
+

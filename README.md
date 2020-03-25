@@ -4,7 +4,7 @@
 框架 `.NET Standard 2.1` `.NET Framework 4.7`，包括开发中常用的扩展方法。
 
 ## 目录
-* [更新日志](CHANGELOG.md "更新日志")（2019.12.25）
+* [更新日志](CHANGELOG.md "更新日志")（2020.03.25）
 * [1.判断+检测](#1判断检测)
 * [2.加密](#2加密)
 * [3.类型转换](#3类型转换)
@@ -597,6 +597,29 @@ var val = arr.ToStrings(",");  // "1,2,3,4,5"
 
 ```
 
+#### 4.9 `IEnumerable<T>` Add/IndexOf/Distinct
+
+*[C#]*
+
+```csharp
+var list = new List<int> { 1, 2, 3 };
+
+var q1 = list
+    .Select(x => x)
+    .Add(11, 12)
+    .Add(new[] { 13, 14 })
+    .Add(list.Select(x => x));
+// 1  2  3  11  12  13  14  1  2  3
+
+IEnumerable<int> q2 = null;
+var q3 = q2.Add(list.Select(x => x));
+// 1  2  3
+
+IEnumerable<int> q4 = null;
+var q5 = q4.Add(null);
+// null
+
+```
 ## 5.文字处理
 > for [ToolGood.Words](https://www.nuget.org/packages/ToolGood.Words/ "ToolGood.Words")
 

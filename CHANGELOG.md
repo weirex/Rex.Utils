@@ -1,8 +1,16 @@
 # Change log
 
+## 2.2.1.3 （2020.03.25）
+- 增加 `SplitsDefault` 扩展方法，当拆分字符串是 null 时返回一个默认集合
+- 增加 `ResultModel<T>`，扩展 `ResultModel.Success(), ResultModel<T>.Success(), ResultModel.Error(), ResultModel<T>.Error()`
+
+
+
 ## 2.2.1 （2020.03.25）
 - 增加 `IEnumerable<T>` 扩展 Add
 - 优化部分代码
+
+
 
 ## 2.2.0 （2019.12.25）
 - 调整部分代码的依赖关系
@@ -10,6 +18,7 @@
 - 增加 单例类助手 `Singleton` 例：`public class ClassA : Singleton<ClassA>`
 - 增加 `Distinct` 扩展更符合 Linq 一贯的风格 `var p1 = products.Distinct(p => p.ID);`
 - 修改 `ResultModel` 命名空间 `System.GeneralExtensions.ResultModel`【和自己的其他项目有冲突了。。。】
+
 
 
 ## 2.1.0.3 （2019.11.09）

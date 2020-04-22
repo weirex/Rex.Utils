@@ -1,6 +1,6 @@
 # Change log
 
-## 2.2.1.3 （2020.04.22）
+## 2.2.1.4 （2020.04.22）
 - 增加 `SplitsDefault` 扩展方法，当拆分字符串是 null 时返回一个默认集合
 - 增加 `ResultModel<T>`，扩展 `ResultModel.Success(), ResultModel<T>.Success(), ResultModel.Error(), ResultModel<T>.Error()`
 

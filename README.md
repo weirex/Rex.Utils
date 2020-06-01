@@ -779,7 +779,7 @@ public static void abc() {
 - GetValue
 
 - Framework：配置在 web.config
-- .Net Core：可将 AppSettings.json 文件放置于根目录或 App_Data 目录内
+- .Net Core：可将 AppSettings.json 文件放置于根目录
 
 *AppSettings.json*
 ```JSON
@@ -802,11 +802,16 @@ public static void abc() {
 </appSettings>
 ```
 
-*[C#]*
+*[C#] .Net Framework*
 
 ```csharp
 string abc = AppSettings.GetValue("Log4NetPath");   // "/App_Data/log4net.config"
-int number = AppSettings.GetValue<int>("number");   // 3600
+int number = AppSettings.GetValue<int>("CacheTime");   // 3600
 ```
 
+*[C#] .Net Core*
+```csharp
+string abc = AppSettings.GetValue("AppSettings:Log4NetPath");   // "/App_Data/log4net.config"
+int number = AppSettings.GetValue<int>("AppSettings:CacheTime");   // 3600
+```
 

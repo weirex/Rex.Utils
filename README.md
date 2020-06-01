@@ -1,8 +1,8 @@
 # Rex.Utils.Core
 
 ## 简介
-- 3.x 版本支持 `.NET Standard 2.1` 
-- 2.x 版本支持 `.NET Standard 2.1` `.NET Framework 4.7`，包括开发中常用的扩展方法。
+- 3.x 版本只支持 `.NET Standard 2.1` 
+- 2.x 版本支持 `.NET Framework 4.7+`
 
 ## 目录
 * [更新日志](CHANGELOG.md "更新日志")（2020.5.1）

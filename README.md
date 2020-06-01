@@ -1,4 +1,4 @@
-# Rex.Utils.Core
+# Rex.Utils
 
 ## 简介
 - 3.x 版本只支持 `.NET Standard 2.1` 

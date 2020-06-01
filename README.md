@@ -784,7 +784,7 @@ public static void abc() {
 *AppSettings.json*
 ```JSON
 {
-  "Appsettings": 
+  "AppSettings": 
     {
         "Log4NetPath": "/App_Data/log4net.config",
         "CacheTime": 3600,

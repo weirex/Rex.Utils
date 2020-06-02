@@ -1,10 +1,25 @@
 # Change log
 
+## 3.2.3 （2020.06.01）
+- 增加 UtilsBasis.GetUnixTimestamp 返回毫秒时间戳（e.g. 1591115598575）
+- 调整部分代码
+
+## 3.1
+- 增加 `AppSettings.GetValueToDirectory` 扩展方法
+
+
+## 3.0
+- 增加 枚举 ToList 方法，例如：`var list = new Color().ToList();`
+- 扩展 `ResultModel`
+
 
 ## 2.2.1.5 （2020.05.01）
-- 调整 `new ResultModel` 返回 json { code:0,msg:"ok",data:{} }
-- 调整 `new ResultModel<T>` 返回 json { code:0,msg:"ok",result:{} }
-- 增加 `new ResultModelV2` 返回 json { code:0,msg:"ok",result:{} }
+- 调整 `new ResultModel(int,string,object)` 返回 json `{ code:0,msg:"ok",data:{} }`
+- 增加 `new ResultInfo(int,string,object)` 返回 json `{ code:0,msg:"ok",result:{} }`
+- 增加 `new ResultInfo<T>(int,string,T)` 返回 json `{ code:0,msg:"ok",result:{} }`
+- 增加 `ResultModel.Success()` `ResultModel.Error()`
+- 增加 `ResultInfo.Success()` `ResultInfo.Error()`
+- 增加 `ResultInfo<T>.Success()` `ResultInfo<T>.Error()`
 
 
 ## 2.2.1.4 （2020.04.22）

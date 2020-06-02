@@ -1,11 +1,11 @@
 # Rex.Utils
 
 ## 简介
-- 3.x 版本只支持 `.NET Standard 2.1` 
-- 2.x 版本支持 `.NET Framework 4.7+`
+- 扩展类库包括：类型转换、类型检测、加密/解密、日志、常用扩展方法、文字处理、配置文件读取等。
+- 支持 `.NET Standard 2.1` `.NET Framework 4.7`。
 
 ## 目录
-* [更新日志](CHANGELOG.md "更新日志")（2020.5.1）
+* [更新日志](CHANGELOG.md "更新日志")（2020.06.03）
 * [1.判断+检测](#1判断检测)
 * [2.加密](#2加密)
 * [3.类型转换](#3类型转换)
@@ -105,12 +105,21 @@ var str = b64.Base64Decode(Encoding.Default);
 
 ### 2.2 DESEncrypt
 
-*[AppSettings]*
+*[web.config]*
 
 ```xml
 <appSettings>
   <add key="DESKey" value="DES-keys"/>
 </appSettings>
+```
+
+*[appsettings.json]*
+```JSON
+{
+    "Appsettings": {
+        "DESKey": "DES-keys"
+    }
+}
 ```
 
 *[C#]*
@@ -503,6 +512,11 @@ str.Splits("s"); // [ "Sy", "tem.String" ]
 str = "/Sys//tem/ /.String";
 str.Splits("/"); // [ "Sys", "tem", "", ".String" ]
 str.Split('/');  // [ "", "Sys", "", "tem", " ", ".String" ]
+
+
+str = null;
+str.SplitsDefault(','); //返回一个默认集合
+str.SplitsDefault("|"); //返回一个默认集合
 ```
 
 #### 4.6 Joins
@@ -700,17 +714,16 @@ str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，
 - `Info`
 - `Debug`
 
-*AppSettings.json*
+*[AppSettings.json]*
 ```JSON
 {
   "Appsettings": {
-    "Log4NetPath": "/App_Data/log4net.config",
-    "CacheTime": 3600,
+    "Log4NetPath": "/App_Data/log4net.config"
     }
 }
 ```
 
-*web.config*
+*[web.config]*
 ```xml
 <appSettings>
    <add key="Log4NetPath" value="/App_Data/log4net.config" />
@@ -726,6 +739,7 @@ str.GetAllPinYin();   // 获取所有拼音,中文字符集为[0x4E00,0x9FA5]，
 // LogHelper.Warn(System.Reflection.MethodBase.GetCurrentMethod(), ex);
 // LogHelper.Info(System.Reflection.MethodBase.GetCurrentMethod(), ex);
 // LogHelper.Debug(System.Reflection.MethodBase.GetCurrentMethod(), ex);
+
 
 // ex ==> Exception or IEnumerable<string> or string
 
@@ -759,7 +773,7 @@ public static void abc() {
     </root>
     <appender name="RollingLogFileAppender" type="log4net.Appender.RollingFileAppender">
       <encoding value="utf-8" />
-      <file value="C:\Log\" />
+      <file value="C:\log\" />
       <appendToFile value="true" />
       <maxSizeRollBackups value="30" />
       <maximumFileSize value="5MB" />
@@ -768,7 +782,13 @@ public static void abc() {
       <staticLogFileName value="false" />
       <datePattern value="yyyy-MM-dd'.log'" />
       <layout type="log4net.Layout.PatternLayout">
-        <conversionPattern value="记录时间: %date%n线程ID: [%thread]%n日志级别: %-5level%n所在类: %logger property:[%property{NDC}] -%n日志描述: %n%message%n%n%n" />
+        <conversionPattern value="%n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+%n【日志级别】%-5level
+%n【记录时间】%date
+%n【线程编号】[%thread]
+%n【执行时间】[%r]毫秒
+%n【出错的类】%logger 属性[%property{NDC}]
+%n【错误描述】%message" />
       </layout>
     </appender>
   </log4net>
@@ -778,13 +798,13 @@ public static void abc() {
 ## 7.配置文件读取（带缓存）
 - GetValue
 
-- Framework：配置在 web.config
-- .Net Core：可将 AppSettings.json 文件放置于根目录
+- .NET Framework：配置在 web.config
+- .NET Core：可将 AppSettings.json 文件放置于根目录或 App_Data 目录内
 
 *AppSettings.json*
 ```JSON
 {
-  "AppSettings": 
+  "Appsettings": 
     {
         "Log4NetPath": "/App_Data/log4net.config",
         "CacheTime": 3600,
@@ -802,16 +822,11 @@ public static void abc() {
 </appSettings>
 ```
 
-*[C#] .Net Framework*
+*[C#]*
 
 ```csharp
 string abc = AppSettings.GetValue("Log4NetPath");   // "/App_Data/log4net.config"
-int number = AppSettings.GetValue<int>("CacheTime");   // 3600
+int time = AppSettings.GetValue<int>("CacheTime");   // 3600
 ```
 
-*[C#] .Net Core*
-```csharp
-string abc = AppSettings.GetValue("AppSettings:Log4NetPath");   // "/App_Data/log4net.config"
-int number = AppSettings.GetValue<int>("AppSettings:CacheTime");   // 3600
-```
 

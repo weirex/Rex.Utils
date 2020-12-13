@@ -856,7 +856,7 @@ var sha1 = str.SHA1();
 - [10.StringCut](#510-stringcut)
 
 
-#### 5.1 Append
+### 5.1 Append
 
 ```csharp
 string s1 = "string";
@@ -876,7 +876,7 @@ var v2 = val.AppendBefore("@@");    // "@@string-object-123"
 ```
 
 
-#### 5.2 Joins
+### 5.2 Joins
 
 ```csharp
 var list = new List<string>();
@@ -894,7 +894,7 @@ list.Joins("_");    // "A_B_C"
 ```
 
 
-#### 5.3 Lengths
+### 5.3 Lengths
 
 ```csharp
 var str = "获取当前System.String";
@@ -904,7 +904,7 @@ var i2 = str.Length;    // 17
 ```
 
 
-#### 5.4 MapPaths
+### 5.4 MapPaths
 - 文件存在返回绝对路径，文件不存在返回 `null`
 - 网址路径，则直接返回网址本身，支持 `http://` `https://`
 
@@ -917,7 +917,7 @@ var v3 = "App_Data/log4net.config".MapPaths();          // C:\IIS\App_Data\log4n
 ```
 
 
-#### 5.5 Replaces
+### 5.5 Replaces
 
 ```csharp
 var str = "获取当前System.String";
@@ -928,7 +928,7 @@ str.Replaces(new[] { "S", "获取" }, "@");    // "@当前@ystem.@tring"
 ```
 
 
-#### 5.6 Splits
+### 5.6 Splits
 - 返回值不包括包含空字符串的数组元素
 - 数组每项会删除开头和结尾空白字符
 - 返回序列的每个元素均已去除收尾空格
@@ -957,7 +957,7 @@ str.SplitsOrDefault("|"); //返回一个空集合 new string[0]
 ```
 
 
-#### 5.7 Substrings
+### 5.7 Substrings
 - 截取字符串，区分中英文字符长度，中文按1:2，英文按1:1 计算长度
 
 ```csharp
@@ -971,7 +971,7 @@ str.Substring(0, 11);       // "获取当前System."
 ```
 
 
-#### 5.8 ToTitleCase
+### 5.8 ToTitleCase
 - 将指定字符串转换为词首字母大写
 
 ```csharp
@@ -1005,7 +1005,7 @@ foreach (var item in values) {
 ```
 
 
-#### 5.9 Trims
+### 5.9 Trims
 
 ```csharp
 var val = str.Trims();                    // 等同于 str?.Trim();
@@ -1016,13 +1016,164 @@ str.Trims(null);               // "获取当前System.String对象中的字符�
 ```
 
 
-#### 5.10 StringCut
+### 5.10 StringCut
 - 字符串裁剪
 
 
 ```csharp
 var str = "Newtonsoft.Json";
 str.StringCut("New", ".");      // tonsoft
+```
+
+
+## 6.验证与判断
+- [1.IsNull](#61-isnull)
+- [2.IsRange](#62-isrange)
+
+### 6.1 IsNull
+- 判断是否为 null or empty，简化 string.IsNullOrWhiteSpace 方便调用
+- 支持已下类型：
+  - `string`
+  - `object`
+  - `DBNull`
+  - `DataTable`
+  - `DataRowCollection`
+  - `DataRow`
+  - `DataRow[]`
+  - `DataSet`
+  - `IEnumerable`
+
+
+```csharp
+object o = null;
+o.IsNull()				// true
+
+string str = null;
+str.IsNull()				// true
+"".IsNull()				// true
+" ".IsNull()				// true
+
+var o = DBNull.Value;
+o.IsNull()				// true
+
+
+
+DataTable table = null;
+table.IsNull()				// true
+
+table = new DataTable();
+table.IsNull()				// true
+table.Rows.IsNull()			// true
+
+table.Rows.Add()
+table.Rows.Add()
+table.IsNull()				// false
+table.Rows.IsNull()			// false
+
+
+DataSet ds = null;
+ds.IsNull()				// true
+
+ds = new DataSet();
+ds.IsNull()				// true
+
+ds.Tables.Add(new DataTable());
+ds.Tables.Add(new DataTable());
+ds.IsNull();				// false
+
+
+var list = new List<string>();
+list.IsNull();				// true
+list = null;
+list.IsNull();				// true
+```
+
+
+### 1.2 IsRange
+- 支持检测 数值/时间/集合 是否在的范围内
+
+
+```csharp
+var a = 1;
+var b = 10;
+var c = 5;
+var d = 14;
+c.IsRange(a, b);		// true
+d.IsRange(a, b);		// false
+
+
+var a = DateTime.Parse("2019/5/1");
+var b = DateTime.Parse("2019/5/5");
+var c = DateTime.Parse("2019/5/2");
+var d = DateTime.Parse("2019/5/6");
+c.IsRange(a, b);		// true
+d.IsRange(a, b);		// false
+
+
+var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+var val1 = 3;
+var val2 = 55;
+val1.IsRange(list);		// true
+val2.IsRange(list);		// false
+```
+
+
+## 7.其他
+- [1.GetIPv4](#71-getipv4)
+- [2.GetUnixTimestamp](#72-getunixtimestamp) 获取时间戳（毫秒），13位
+- [3.ConvertBytes](#73-convertbytes) 单位转换 Bytes,KB,MB,GB,TB
+- [4.Random](#74-random)
+
+
+### 7.1 GetIPv4
+
+
+```csharp
+string[] ip = UtilsBasis.GetIPv4;	// new[] { "192.168.132.1", "192.168.126.1", "192.168.3.100" }
+```
+
+
+### 7.2 GetUnixTimestamp
+- 获取时间戳（毫秒），13位
+
+
+```csharp
+var t = UtilsBasis.GetUnixTimestamp;	// 1607875432593
+```
+
+### 7.3 ConvertBytes
+- 单位转换 Bytes, KB, MB, GB, TB
+
+
+```csharp
+UtilsBasis.ConvertBytes(245134695);	// "233.78 MB"
+UtilsBasis.ConvertBytes(1592494871);	// "1.48 GB"
+UtilsBasis.ConvertBytes(73181050853);	// "68.16 GB"
+UtilsBasis.ConvertBytes(316969);	// "309.54 KB"
+```
+
+
+### 7.4 Random
+- RandomNumber: 随机纯数字
+- RandomString: 随机数字+字母
+- RandomStringByPattern: 随机支持自定义生成样式，默认：##??**
+  - "?"代表一个字符
+  - "#"代表一个一位数字
+  - "*"代表一个字符串或一个一位数字
+
+
+```csharp
+UtilsBasis.RandomNumber()	// "707785"
+UtilsBasis.RandomNumber(10)	// "6102154083"
+
+
+UtilsBasis.RandomString()	// "20NB66"
+UtilsBasis.RandomString(10)	// "DX6ZVVNRPF"
+
+
+UtilsBasis.RandomStringByPattern()		// "36hBLo"
+UtilsBasis.RandomStringByPattern("####-???")	// "5065-CEc"
+
 ```
 
 

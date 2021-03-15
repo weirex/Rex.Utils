@@ -333,42 +333,43 @@ v.ToDouble(-1) // -1
   - 采用 `Newtonsoft.Json`
   - 支持自定义 `Newtonsoft.Json.JsonSerializerSettings`
   - `JsonNetExtensions.JsonNetSettings` 默认配置：
-    - 整齐打印：`Formatting = Newtonsoft.Json.Formatting.None`
-    - 忽略所有 null 值属性：`NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore`
-    - 输出日期格式：`DateFormatString = "yyyy/MM/dd HH:mm:ss"`
+    - 启用输出忽略所有 null 值属性
+    - 启用输出日期格式：`yyyy/MM/dd HH:mm:ss`
+    - 启用采用蛇形命名策略，如："FooBar" ==> "foo_bar"，注：尽在不设置 JsonProperty 时有效
+    - 启用压缩输出
 - `ToJsonAsSystem` `ToObjectAsSystem`
   - 采用 `System.Text.Json`
   - 支持自定义 `System.Text.Json.JsonSerializerOptions`
   - `JsonMicrosoftExtensions.JsonOptions` 默认配置：
-    - 整齐打印：`WriteIndented = false`
-    - 忽略所有 null 值属性：`DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull`
-    - 输出日期格式（支持 DateTime 和 DateTime? ）默认格式：yyyy/MM/dd HH:mm:ss
-    - 属性名规则 camel 大小写：`PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase`
-    - 显示中文：`Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping`
+    - 启用输出忽略所有 null 值属性
+    - 启用输出日期格式：`yyyy/MM/dd HH:mm:ss`
+    - 启用采用蛇形命名策略，如："FooBar" ==> "foo_bar"，注：尽在不设置 JsonPropertyName 时有效
+    - 启用压缩输出
+    - 启用中文字符编码
 
 ```csharp
 [JsonObject(MemberSerialization.OptIn)]
 [Serializable]
 class Movie {
-    [JsonPropertyName("nn")]        // System.Text.Json 自定义 JSON 属性名
-    [JsonProperty("nn")]            // Newtonsoft.Json 自定义 JSON 属性名
+    [System.Text.Json.Serialization.JsonPropertyName("nn")] // System.Text.Json 自定义 JSON 属性名
+    [Newtonsoft.Json.JsonProperty("nn")]                    // Newtonsoft.Json 自定义 JSON 属性名
     public string Name { get; set; }
 
-    [JsonPropertyName("rd")]
-    [JsonProperty("rd"), JsonConverter(typeof(JsonNetExtensions.DateTimeConverterExtensions), "yyyy.MM.dd")]
-    //[JsonProperty("rd"), JsonConverter(typeof(JsonNetExtensions.DateTimeConverterExtensions))] // 默认: yyyy/MM/dd HH:mm:ss
+    [System.Text.Json.Serialization.JsonPropertyName("rd")]
+    [Newtonsoft.Json.JsonProperty("rd"), Newtonsoft.Json.JsonConverter(typeof(JsonNetExtensions.DateTimeConverterExtensions))] // Newtonsoft.Json 自定义时间格式
+    //[Newtonsoft.Json.JsonProperty("rd"), Newtonsoft.Json.JsonConverter(typeof(JsonNetExtensions.DateTimeConverterExtensions), "yyyy.MM.dd")]
     public DateTime ReleaseDate { get; set; }
 
-    [JsonPropertyName("g")]
-    [JsonProperty("g")]
+    [System.Text.Json.Serialization.JsonPropertyName("g")]
+    [Newtonsoft.Json.JsonProperty("g")]
     public string[] Genres { get; set; }
 
-    [System.Text.Json.Serialization.JsonIgnore] // System.Text.Json  忽略单个属性
-    [Newtonsoft.Json.JsonIgnore]                // Newtonsoft.Json  忽略单个属性
+    [System.Text.Json.Serialization.JsonIgnore]     // System.Text.Json  忽略单个属性
+    [Newtonsoft.Json.JsonIgnore]                    // Newtonsoft.Json  忽略单个属性
     public int Year { get; set; }
 
-    [JsonPropertyName("age")]
-    [JsonProperty("age")]
+    [System.Text.Json.Serialization.JsonPropertyName("age")]
+    [Newtonsoft.Json.JsonProperty("age")]
     public int? Age { get; set; }
 }
 
@@ -377,18 +378,56 @@ m.Name = "abc";
 m.ReleaseDate = DateTime.Parse("2019-5-1");
 m.Genres = new[] { "Action", "Comedy" };
 m.Year = 2021;
+m.Age = 18;
 
 var str1 = m.ToJson(); 
-// {"nn":"abc","rd":"2019.05.01","g":["Action","Comedy"]}
+// {"nn":"abc","rd":"2019/05/01 00:00:00","g":["Action","Comedy"],"age":18}
 
 var str2 = m.ToJsonAsSystem();
-// {"nn":"abc","rd":"2019/05/01 00:00:00","g":["Action","Comedy"]}
+// {"nn":"abc","rd":"2019/05/01 00:00:00","g":["Action","Comedy"],"age":18}
 
 var m1 = str.ToObject<Movie>();
 
 var m2 = str.ToObjectAsSystem<Movie>();
 
 ```
+
+```csharp
+class Movie2 {
+    public string MovieName { get; set; }
+
+    public DateTime ReleaseDate { get; set; }
+
+    public string[] MovieGenres { get; set; }
+
+    public string MovieVersion { get; set; }
+
+    public int MovieYear { get; set; }
+
+    public DateTime MovieTime { get; set; }
+}
+
+
+var m2 = new Movie2();
+m2.MovieName = "abc";
+m2.ReleaseDate = DateTime.Parse("2019-5-1");
+m2.MovieGenres = new[] { "Action", "Comedy" };
+m2.MovieVersion = "2021.03";
+m2.MovieYear = 2021;
+m2.MovieTime = DateTime.Parse("2021-03-15");
+
+
+var t1 = m2.ToJson();
+// {"movie_name":"abc","release_date":"2019/05/01 00:00:00","movie_genres":["Action","Comedy"],"movie_version":"2021.03","movie_year":2021,"movie_time":"2021/03/15 00:00:00"}
+var mt1 = t1.ToObject<Movie2>();
+
+
+var t2 = m2.ToJsonAsSystem();
+// {"movie_name":"abc","release_date":"2019/05/01 00:00:00","movie_genres":["Action","Comedy"],"movie_version":"2021.03","movie_year":2021,"movie_time":"2021/03/15 00:00:00"}
+var mt2 = t2.ToObjectAsSystem<Movie2>();
+```
+
+
 
 ### 2.8 Stream
 > **待完善**
@@ -1176,3 +1215,5 @@ UtilsBasis.RandomStringByPattern()		// "36hBLo"
 UtilsBasis.RandomStringByPattern("####-???")	// "5065-CEc"
 
 ```
+
+

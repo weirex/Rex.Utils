@@ -1,5 +1,13 @@
 # Change log
 
+
+## 5.0.5 （2021.03.15）
+- 调整 `ToJson()` 扩展方法，实体属性不设置 `JsonProperty` 时，默认采用 `SnakeCaseNamingStrategy` 规则，如：FooBar =输出=> foo_bar
+- 调整 `ToJsonAsSystem()` 扩展方法，实体属性不设置 `JsonPropertyName` 时，默认采用 `SnakeCaseNamingStrategy` 规则，如：FooBar =输出=> foo_bar
+- `ToJson()` 和 `ToJsonAsSystem()` 不再捕获异常，触发异常时直接抛出
+- 优化部分代码
+
+
 ## 3.2.3 （2020.06.01）
 - 增加 UtilsBasis.GetUnixTimestamp 返回毫秒时间戳（e.g. 1591115598575）
 - 调整部分代码

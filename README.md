@@ -5,7 +5,7 @@
 - 支持 `.NET 5.0` `.NET Standard 2.1` `.NET Framework 4.7`。
 
 ## 目录
-* 更新日志（2020.12.10）
+* 更新日志（2021.03.15）
 * [1.读取 `appsettings.json`](#1读取-appsettingsjson)
 * [2.Convert 类型转换](#2convert-类型转换)
 * [3.Linq 扩展](#3linq-扩展)
@@ -331,63 +331,64 @@ v.ToDouble(-1) // -1
 ### 2.7 JSON
 - `ToJson` `ToObject` 
   - 采用 `Newtonsoft.Json`
-  - 支持自定义
-  - `JsonSerializerSettings` 默认配置：
-    - `Formatting = Newtonsoft.Json.Formatting.None`
-    - `DateFormatHandling = Newtonsoft.Json.DateFormatHandling.MicrosoftDateFormat`
-    - `DateFormatString = "yyyy/MM/dd HH:mm:ss"`
-    - `NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore`
+  - 支持自定义 `Newtonsoft.Json.JsonSerializerSettings`
+  - `JsonNetExtensions.JsonNetSettings` 默认配置：
+    - 整齐打印：`Formatting = Newtonsoft.Json.Formatting.None`
+    - 忽略所有 null 值属性：`NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore`
+    - 输出日期格式：`DateFormatString = "yyyy/MM/dd HH:mm:ss"`
 - `ToJsonAsSystem` `ToObjectAsSystem`
   - 采用 `System.Text.Json`
-  - 支持自定义
+  - 支持自定义 `System.Text.Json.JsonSerializerOptions`
+  - `JsonMicrosoftExtensions.JsonOptions` 默认配置：
+    - 整齐打印：`WriteIndented = false`
+    - 忽略所有 null 值属性：`DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull`
+    - 输出日期格式（支持 DateTime 和 DateTime? ）默认格式：yyyy/MM/dd HH:mm:ss
+    - 属性名规则 camel 大小写：`PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase`
+    - 显示中文：`Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping`
 
 ```csharp
+[JsonObject(MemberSerialization.OptIn)]
+[Serializable]
 class Movie {
+    [JsonPropertyName("nn")]        // System.Text.Json 自定义 JSON 属性名
+    [JsonProperty("nn")]            // Newtonsoft.Json 自定义 JSON 属性名
     public string Name { get; set; }
+
+    [JsonPropertyName("rd")]
+    [JsonProperty("rd"), JsonConverter(typeof(JsonNetExtensions.DateTimeConverterExtensions), "yyyy.MM.dd")]
+    //[JsonProperty("rd"), JsonConverter(typeof(JsonNetExtensions.DateTimeConverterExtensions))] // 默认: yyyy/MM/dd HH:mm:ss
     public DateTime ReleaseDate { get; set; }
+
+    [JsonPropertyName("g")]
+    [JsonProperty("g")]
     public string[] Genres { get; set; }
+
+    [System.Text.Json.Serialization.JsonIgnore] // System.Text.Json  忽略单个属性
+    [Newtonsoft.Json.JsonIgnore]                // Newtonsoft.Json  忽略单个属性
+    public int Year { get; set; }
+
+    [JsonPropertyName("age")]
+    [JsonProperty("age")]
+    public int? Age { get; set; }
 }
 
 var m = new Movie();
 m.Name = "abc";
 m.ReleaseDate = DateTime.Parse("2019-5-1");
 m.Genres = new[] { "Action", "Comedy" };
+m.Year = 2021;
 
-var str = m.ToJson(); // {"Name":"abc","ReleaseDate":"2019-05-01T00:00:00","Genres":["Action","Comedy"]}
+var str1 = m.ToJson(); 
+// {"nn":"abc","rd":"2019.05.01","g":["Action","Comedy"]}
 
-var model = str.ToObject<Movie>();  // model ==> m
+var str2 = m.ToJsonAsSystem();
+// {"nn":"abc","rd":"2019/05/01 00:00:00","g":["Action","Comedy"]}
+
+var m1 = str.ToObject<Movie>();
+
+var m2 = str.ToObjectAsSystem<Movie>();
+
 ```
-
-```csharp
-[JsonObject(MemberSerialization.OptIn)]
-[Serializable]
-class Movie2 {
-    [JsonProperty("n")]
-    public string Name { get; set; }
-    [JsonProperty("rd")]
-    public DateTime ReleaseDate { get; set; }
-    [JsonProperty("g")]
-    public string[] Genres { get; set; }
-    [JsonIgnore]
-    public string Version { get; set; }
-    [JsonIgnore]
-    public DateTime Release { get; set; }
-
-    [JsonProperty("t"), JsonConverter(typeof(DateTimeConverterExtensions), "yyyy.MM.dd")]
-    //[JsonProperty("t"), JsonConverter(typeof(DateTimeConverterExtensions))]
-    public DateTime Time { get; set; }
-}
-
-var m2 = new Movie2();
-m2.Name = "abc";
-m2.ReleaseDate = DateTime.Parse("2020-5-1");
-m2.Genres = new[] { "Action", "Comedy" };
-
-var str = m2.ToJson(); // {"n":"Rex","rd":"2019/05/01 00:00:00","g":["Action","Comedy"],"t":"2020.12.11"}
-var model2 = str.ToObject<Movie2>(); // model2 ==> m2
-```
-----
-
 
 ### 2.8 Stream
 > **待完善**
@@ -1175,5 +1176,3 @@ UtilsBasis.RandomStringByPattern()		// "36hBLo"
 UtilsBasis.RandomStringByPattern("####-???")	// "5065-CEc"
 
 ```
-
-

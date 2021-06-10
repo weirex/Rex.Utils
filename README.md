@@ -5,7 +5,7 @@
 - 支持 `.NET 5.0` `.NET Standard 2.1` `.NET Framework 4.7`。
 
 ## 目录
-* 更新日志（2021.03.15）
+* [更新日志（2021.06.11）](CHANGELOG.md "更新日志")
 * [1.读取 `appsettings.json`](#1读取-appsettingsjson)
 * [2.Convert 类型转换](#2convert-类型转换)
 * [3.Linq 扩展](#3linq-扩展)

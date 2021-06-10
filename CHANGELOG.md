@@ -1,6 +1,31 @@
 # Change log
 
 
+## 5.0.6 （2021.06.11）
+- 移除 `ResultModel` 对象
+- 扩展 `System.IO`
+  - `str.ReplaceInvalidFileName()` 将不允许在文件名中使用的字符替换成下划线；
+  - `str.GetFileNameWithoutExtension()` 原始方法 `Path.GetFileNameWithoutExtension` 扩展，增加为空判断，避免异常；
+  - `str.GetFileName()` 原始方法 `Path.GetFileName` 扩展，自动判断是否为空，避免异常；
+  - `str.GetExtension()`  原始方法 `Path.GetExtension` 扩展，自动判断是否为空，避免异常；
+  - `IOExt.DeleteFile()` 删除文件，自动判断源文件是否存在；
+  - `IOExt.MoveFile()` 移动文件，自动判断源文件是否存在；
+  - `IOExt.Reader()` 读取文本内容，源文件不存在则返回null
+  - `IOExt.Writer()` 写入文本内容，自动创建目录结构；
+  - `IOExt.Downloader()` 下载文件（简易版）大于5MB不建议使用；
+  - `IOExt.CreateDirectory()` 创建目录，自动判断目录是否存在；
+  - `IOExt.DeleteDirectory()` 删除目录，自动判断目录是否存在；
+  - `IOExt.MoveDirectory` 将文件或目录及其内容移到新位置，自动判断目录是否存在；
+  - `IOExt.GetFiles()` 原始方法 `Directory.GetFiles` 扩展，返回指定目录中文件的名称；
+  - `IOExt.GetDirectories()` 原始方法 `Directory.GetDirectories` 扩展，返回指定目录中文件的名称；
+
+
+## 5.0.5.3 （2021.03.24）
+- `Rex.Utils.Core` 更新包版本
+- `Rex.Microsoft.AspNetCore.Mvc.Extensions` 更新包版本
+- `Rex.Helper.Core` 更新包版本
+
+
 ## 5.0.5 （2021.03.15）
 - 调整 `ToJson()` 扩展方法，实体属性不设置 `JsonProperty` 时，默认采用 `SnakeCaseNamingStrategy` 规则，如：FooBar =输出=> foo_bar
 - 调整 `ToJsonAsSystem()` 扩展方法，实体属性不设置 `JsonPropertyName` 时，默认采用 `SnakeCaseNamingStrategy` 规则，如：FooBar =输出=> foo_bar

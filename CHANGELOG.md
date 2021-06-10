@@ -3,6 +3,7 @@
 
 ## 5.0.6 （2021.06.11）
 - 移除 `ResultModel` 对象
+- 增加 `ToJsonNS` `ToObjectNS` `ToJsonAsSystemNS` `ToObjectAsSystemNS` 方法，不设置任何序列化、反序列化配置项；
 - 扩展 `System.IO`
   - `str.ReplaceInvalidFileName()` 将不允许在文件名中使用的字符替换成下划线；
   - `str.GetFileNameWithoutExtension()` 原始方法 `Path.GetFileNameWithoutExtension` 扩展，增加为空判断，避免异常；

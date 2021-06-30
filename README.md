@@ -2,10 +2,10 @@
 
 ## 简介
 - 扩展类库包括：类型转换、类型检测、加密/解密、日志、常用扩展方法、文字处理、配置文件读取等。
-- 支持 `.NET 5.0` `.NET Standard 2.1` `.NET Framework 4.7`。
+- 支持 `.NET 5.0` `.NET Framework 4.7`。
 
 ## 目录
-* [更新日志（2021.06.11）](CHANGELOG.md "更新日志")
+* [更新日志（2021.06.30）](CHANGELOG.md "更新日志")
 * [1.读取 `appsettings.json`](#1读取-appsettingsjson)
 * [2.Convert 类型转换](#2convert-类型转换)
 * [3.Linq 扩展](#3linq-扩展)

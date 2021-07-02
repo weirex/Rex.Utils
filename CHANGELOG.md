@@ -1,6 +1,6 @@
 # Change log
 
-## 5.1.0 （2021.06.30）
+## 5.1.1 （2021.07.02）
 - 不再支持 `.NET Standard 2.1`，仅支持 `.NET 5.x` 和 `.NET Framework 4.7+`，未来 `6.0` 版本将不支持 `.NET Framework`
 - `.NET Framework 4.7+` 设置 C# 语言版本 8.0
 - 调整部分代码
@@ -18,7 +18,6 @@
   - `IOExt.MoveFile()` 移动文件，自动判断源文件是否存在；
   - `IOExt.Reader()` 读取文本内容，源文件不存在则返回null
   - `IOExt.Writer()` 写入文本内容，自动创建目录结构；
-  - `IOExt.Downloader()` 下载文件（简易版）大于5MB不建议使用；
   - `IOExt.CreateDirectory()` 创建目录，自动判断目录是否存在；
   - `IOExt.DeleteDirectory()` 删除目录，自动判断目录是否存在；
   - `IOExt.MoveDirectory` 将文件或目录及其内容移到新位置，自动判断目录是否存在；

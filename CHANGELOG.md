@@ -1,5 +1,13 @@
 # Change log
 
+
+## 5.1.3 （2021.07.10）
+- 调整部分代码
+- JSON扩展命名空间调整，将优化默认配置修改为：
+  - 使用 `System.NewtonsoftJson.Settings` 代替 `System.JsonNetExtensions.JsonNetSettings`
+  - 使用 `System.MicrosoftJsonExtensions.Settings` 代替 `System.JsonMicrosoftExtensions.JsonOptions`
+
+
 ## 5.1.1 （2021.07.02）
 - 不再支持 `.NET Standard 2.1`，仅支持 `.NET 5.x` 和 `.NET Framework 4.7+`，未来 `6.0` 版本将不支持 `.NET Framework`
 - `.NET Framework 4.7+` 设置 C# 语言版本 8.0
